@@ -26,42 +26,45 @@ and view their active subscriptions.
 
 ---
 
-## Architecture
-Clean separation across three layers:
+## 🏗️ Architecture & Project Structure
+
+The project strictly adheres to a clean, modular architecture with a clear separation of concerns divided into three main layers: **Core**, **Data**, and **UI**.
+
+```text
 com.first.app
 ├── core/
-│   ├── Constants.kt                # API endpoints and storage keys
+│   ├── Constants.kt              # API endpoints and storage keys
 │   ├── network/
-│   │   ├── ApiService.kt           # Retrofit interface
-│   │   ├── AuthInterceptor.kt      # Attaches auth header to requests
-│   │   └── RetrofitClient.kt       # OkHttp + Retrofit builder
+│   │   ├── ApiService.kt         # Retrofit interface definitions
+│   │   ├── AuthInterceptor.kt    # Attaches dynamic Bearer token headers
+│   │   └── RetrofitClient.kt     # Configures OkHttp client & Retrofit instance
 │   └── storage/
-│       └── TokenDataStore.kt       # Secure token persistence
+│       └── TokenDataStore.kt     # Secure, async authentication token persistence
 ├── data/
 │   ├── models/
-│   │   └── Models.kt               # Request/response data classes
+│   │   └── Models.kt             # Request/Response DTO data classes
 │   └── repository/
-│       ├── AuthRepository.kt       # Register, login, logout logic
-│       ├── ServiceRepository.kt    # Services, subscribe, subscriptions
-│       └── ErrorUtils.kt           # Centralised error parsing
+│       ├── AuthRepository.kt     # Boundary for register, login, and logout logic
+│       ├── ServiceRepository.kt  # Boundary for data sourcing, sub management
+│       └── ErrorUtils.kt         # Centralized API network exception mapping
 └── ui/
-├── navigation/
-│   └── Navigation.kt           # NavHost and route definitions
-├── screens/
-│   ├── SplashScreen.kt         # Auth state check on launch
-│   ├── auth/
-│   │   ├── LoginScreen.kt
-│   │   └── RegisterScreen.kt
-│   └── services/
-│       ├── ServicesScreen.kt
-│       └── SubscriptionsScreen.kt
-├── theme/
-│   └── Theme.kt                # Material 3 colour scheme
-├── viewmodel/
-│   ├── AuthViewModel.kt
-│   └── ServicesViewModel.kt
-└── widgets/
-└── Widgets.kt              # Reusable UI components
+    ├── navigation/
+    │   └── Navigation.kt         # Type-safe NavHost routes and graph definitions
+    ├── screens/
+    │   ├── SplashScreen.kt       # Dynamic auth-state gateway check on launch
+    │   ├── auth/
+    │   │   ├── LoginScreen.kt    # Input fields with localized error-state feedback
+    │   │   └── RegisterScreen.kt # Multi-field form validation wrapper
+    │   └── services/
+    │       ├── ServicesScreen.kt # Catalog of available products with state handling
+    │       └── SubscriptionsScreen.kt # Active subscription status rendering
+    ├── theme/
+    │   └── Theme.kt              # Customized Material 3 design tokens & colors
+    ├── viewmodel/
+    │   ├── AuthViewModel.kt      # State management proxy for identity workflows
+    │   └── ServicesViewModel.kt  # State management proxy for digital assets data
+    └── widgets/
+        └── Widgets.kt            # Reusable Atomic UI blocks (Cards, Skeletons, States)
 
 ---
 
